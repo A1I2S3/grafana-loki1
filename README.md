@@ -68,10 +68,10 @@ docker compose up -d
  project
     |
     |___/src
-         |_/main
-             |_/java
-                 |_/yourapplication.java
-
+    |      |_/main
+    |         |_/java
+    |             |_/yourapplication.java
+    |
     |
     |__/pom..xml
 ```
@@ -115,11 +115,11 @@ def log_to_file(message, filename):
 # Use a slim base image
 FROM debian:bullseye-slim
 
-# Install OpenJDK 17
-RUN apt-get update && apt-get install -y openjdk-17-jdk
+# Install OpenJDK 
+RUN apt-get update && apt-get install -y openjdk-<java-version>-jdk
 
 # Set the JAVA_HOME environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-<java-version>-openjdk-amd64
 
 # Set the working directory in the container
 WORKDIR /app
@@ -160,7 +160,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose port
-EXPOSE 5000
+EXPOSE <port number for python application>
 
 # Command to run the application
 CMD ["python", "yourapplication.py"]
@@ -168,7 +168,7 @@ CMD ["python", "yourapplication.py"]
 3. Docker image for nodejs application
 ```bash
 # Use the official Node.js image as a base
-FROM node:16-alpine3.12
+FROM node:<node version>
 
 # Set the working directory in the container
 WORKDIR /app
@@ -182,8 +182,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Expose port 3000
-EXPOSE 6000
+# Expose port 
+EXPOSE <port number for node.js application>
 
 # Command to run the application
 CMD ["node", "yourapplication.js"]
@@ -200,13 +200,13 @@ volumes:
   spring_logs:
 
 services:
-  user:
+  <java application name>:
     container_name: spring-app
     build: 
       context: ./user
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "<port number>:<port number>"
     volumes:
       - '/var/lib/docker:/var/lib/docker'
       - 'spring_logs:/app'
@@ -216,14 +216,14 @@ services:
         loki-url: "http://<your ip address>:3100/loki/api/v1/push"
     networks:
       - monitoring
-  python_api:
+  <python application name>:
     #build: ./python_api
     container_name: cred
     build: 
       context: ./python_api
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "<port number>:<port number>"
     volumes:
       - '/var/lib/docker:/var/lib/docker'
       - 'cred_logs:/app'
@@ -235,14 +235,13 @@ services:
     networks:
       - monitoring
 
-  blogs_api :
-    #build: ./python_api
+  <nodejs application name> :
     container_name: blogs
     build: 
       context: ./blogs_api
       dockerfile: Dockerfile
     ports:
-      - "6000:6000"
+      - "<port number>:<port number>"
     volumes:
       - '/var/lib/docker:/var/lib/docker'
       - 'blog_logs:/app'
