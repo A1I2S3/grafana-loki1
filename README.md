@@ -195,57 +195,19 @@ CMD ["node", "yourapplication.js"]
  version: '3'
 
 volumes:
-  blog_logs:
-  cred_logs:
-  spring_logs:
+  <external_logs>:
 
 services:
-  <java application name>:
-    container_name: spring-app
+  <application name>:
+    container_name: <container name>
     build: 
-      context: ./user
+      context: ./<application_name>
       dockerfile: Dockerfile
     ports:
       - "<port number>:<port number>"
     volumes:
       - '/var/lib/docker:/var/lib/docker'
-      - 'spring_logs:/app'
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://<your ip address>:3100/loki/api/v1/push"
-    networks:
-      - monitoring
-  <python application name>:
-    #build: ./python_api
-    container_name: cred
-    build: 
-      context: ./python_api
-      dockerfile: Dockerfile
-    ports:
-      - "<port number>:<port number>"
-    volumes:
-      - '/var/lib/docker:/var/lib/docker'
-      - 'cred_logs:/app'
-      # - log-data:/var/lib/docker/volumes/own_instance_log-data
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://<your ip address>:3100/loki/api/v1/push"
-    networks:
-      - monitoring
-
-  <nodejs application name> :
-    container_name: blogs
-    build: 
-      context: ./blogs_api
-      dockerfile: Dockerfile
-    ports:
-      - "<port number>:<port number>"
-    volumes:
-      - '/var/lib/docker:/var/lib/docker'
-      - 'blog_logs:/app'
-      # - log-data:/var/lib/docker/volumes/own_instance_log-data
+      - '<external_logs>:/app'
     logging:
       driver: loki
       options:
@@ -304,45 +266,23 @@ Promtail is an agent which tails log files and pushes them to Loki.
 clients:
   - url: http://<your ip address>:3100/loki/api/v1/push
 scrape_configs:
-  - job_name: blog_logs
+  - job_name: <your_application_logs>
     static_configs:
       - targets:
           - localhost
         labels:
           job: blog_logs
-          __path__: /blog_logs/blog_logs.txt
-    pipeline_stages:
-      - regex:
-          expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
-  - job_name: cred_logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: cred_logs
-          __path__: /cred_logs/cred_logs.txt
+          __path__: /<your_application_logs>/<external_log_files>.txt
     pipeline_stages:
       - regex:
           expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
 
-  - job_name: spring_logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: spring_logs
-          __path__: /spring_logs/applications.log
-    pipeline_stages:
-      - regex:
-          expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
 ```
 positions.yaml
 1. The positions file helps Promtail continue reading from where it left off in the case of the Promtail instance restarting.
 ```bash
 positions:
-  /blog_logs/blog_logs.txt: "0"
-  /cred_logs/cred_logs.txt: "0"
-  /spring_logs/applications.log: "0"
+  /<yourapp>_logs/<external log file>.txt: "0"
   ```
 
 # visualization for count of status codes in grafana
