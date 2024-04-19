@@ -341,9 +341,14 @@ startTLS_policy =
 3. enter the user,password and from_address.
 4. create the contact point in grafana in alerting section using the mail addresss and test the mail to check if the mails are being sent.
 5. Now in the dashboard give the alert condition
-
-
-
+## Define Conditions for Specific Status Codes (500, 502):
+```bash
+{job="your_job_name", status="500"} or {job="your_job_name", status="502"}
+```
+## Define Conditions for Threshold Limit of Error Status Codes:
+```bash
+sum(rate({job="your_job_name", status=~"5.."}[5m])) / sum(rate({job="your_job_name"}[5m])) * 100 > 5
+```
 
 
 
