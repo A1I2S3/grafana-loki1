@@ -338,7 +338,7 @@ scrape_configs:
           expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
 ```
 positions.yaml
-The positions file helps Promtail continue reading from where it left off in the case of the Promtail instance restarting.
+1. The positions file helps Promtail continue reading from where it left off in the case of the Promtail instance restarting.
 ```bash
 positions:
   /blog_logs/blog_logs.txt: "0"
