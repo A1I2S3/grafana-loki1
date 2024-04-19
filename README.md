@@ -298,6 +298,7 @@ networks:
     driver: bridge
 ```
 # configure the promtail-config.yml file
+Promtail is an agent which tails log files and pushes them to Loki.
 ```bash
  positions:
   filename: ./positions.yaml
@@ -337,6 +338,7 @@ scrape_configs:
           expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
 ```
 positions.yaml
+The positions file helps Promtail continue reading from where it left off in the case of the Promtail instance restarting.
 ```bash
 positions:
   /blog_logs/blog_logs.txt: "0"
@@ -367,6 +369,7 @@ app.use((req, res, next) => {
 });
 ```
 Then in Grafana for Loki as the data source perform LogQL query given as
+If you donot want to specify the middleware then return the status code for each response
 
 ```bash
 count_over_time({job="cred_logs"} |= `status 502` [24h])
