@@ -1,0 +1,15 @@
+2024.04.17, 07:23:42.0880 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:07:00.0567 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:11:30.0264 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:18:35.0184 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:19:31.0724 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:19:32.0764 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:19:40.0592 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 08:19:44.0538 UTC -> created the blog
+2024.04.17, 08:19:44.0551 UTC -> POST /blogs responded with status 200 in 78 ms
+2024.04.17, 10:55:09.0819 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 10:55:16.0649 UTC -> all the blogs
+2024.04.17, 10:55:16.0662 UTC -> GET /blogs responded with status 200 in 96 ms
+2024.04.17, 10:56:02.0160 UTC -> blogs app listening at http://localhost:6000
+2024.04.17, 10:56:35.0525 UTC -> deleted all blogs
+2024.04.17, 10:56:35.0533 UTC -> DELETE /blogs responded with status 200 in 74 ms

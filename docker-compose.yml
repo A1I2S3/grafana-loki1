@@ -1,0 +1,104 @@
+version: '3'
+
+volumes:
+  blog_logs:
+  cred_logs:
+  spring_logs:
+
+services:
+  user:
+    container_name: spring-app
+    build: 
+      context: ./user
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - '/var/lib/docker:/var/lib/docker'
+      - 'spring_logs:/app'
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://192.168.0.132:3100/loki/api/v1/push"
+    networks:
+      - monitoring
+  python_api:
+    #build: ./python_api
+    container_name: cred
+    build: 
+      context: ./python_api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - '/var/lib/docker:/var/lib/docker'
+      - 'cred_logs:/app'
+      # - log-data:/var/lib/docker/volumes/own_instance_log-data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://192.168.0.132:3100/loki/api/v1/push"
+    networks:
+      - monitoring
+
+  blogs_api :
+    #build: ./python_api
+    container_name: blogs
+    build: 
+      context: ./blogs_api
+      dockerfile: Dockerfile
+    ports:
+      - "6000:6000"
+    volumes:
+      - '/var/lib/docker:/var/lib/docker'
+      - 'blog_logs:/app'
+      # - log-data:/var/lib/docker/volumes/own_instance_log-data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://192.168.0.132:3100/loki/api/v1/push"
+    networks:
+      - monitoring
+  
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/tmp:/var/lib/grafana
+      - ./grafana/tmp/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - monitoring
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - loki
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - "/var/log:/var/log"
+      - "blog_logs:/blog_logs"
+      - "cred_logs:/cred_logs"
+      - "spring_logs:/spring_logs"
+      - "./positions.yaml:/tmp/positions.yaml"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./promtail-config.yml:/etc/promtail-config.yml"
+    command: "-config.file=/etc/promtail-config.yml"
+
+    networks:
+      - loki
+
+  
+  
+networks:
+  loki:
+    driver: bridge
+  monitoring:
+    driver: bridge

@@ -1,0 +1,36 @@
+positions:
+  filename: ./positions.yaml
+clients:
+  - url: http://192.168.0.132:3100/loki/api/v1/push
+scrape_configs:
+  - job_name: blog_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: blog_logs
+          __path__: /blog_logs/blog_logs.txt
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
+  - job_name: cred_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: cred_logs
+          __path__: /cred_logs/cred_logs.txt
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
+  - job_name: spring_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: spring_logs
+          __path__: /spring_logs/application.log
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\S+)\s+->\s+(?P<message>.*)$'
+  

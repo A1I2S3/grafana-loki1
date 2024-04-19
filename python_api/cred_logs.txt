@@ -1,0 +1,15 @@
+blogs app listening at http://localhost:5000
+blogs app listening at http://localhost:5000
+cred app listening at http://localhost:5000
+cred app listening at http://localhost:5000
+cred app listening at http://localhost:5000
+POST /create responded with status 405 
+GET /get/<int:661e4bcd40c961150843608c> responded with status 404 
+2024-04-17 17:26:23,937 - INFO - cred app listening at http://localhost:5000
+2024-04-17 17:26:23,954 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.132:5000
+2024-04-17 17:26:23,957 - INFO - [33mPress CTRL+C to quit[0m
+2024-04-17 17:28:03,204 - INFO - User created: {'name': 'smithA', 'email': 'smith@gmail', '_id': ObjectId('661fb94a586b2edec29ee04f')}, Status code: 200
+2024-04-17 17:28:03,205 - INFO - 127.0.0.1 - - [17/Apr/2024 17:28:03] "POST /create HTTP/1.1" 200 -

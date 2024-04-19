@@ -1,0 +1,4 @@
+positions:
+  /blog_logs/blog_logs.txt: "0"
+  /cred_logs/cred_logs.txt: "0"
+  /spring_logs/application.log: "0"

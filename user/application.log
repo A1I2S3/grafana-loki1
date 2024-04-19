@@ -1,0 +1,4 @@
+Apr 18, 2024 5:56:37 PM com.tech.user.UserController createUser
+INFO: User created: User{id='2', firstName='preethi', lastName='kumari', email='preei@ert'}
+Apr 18, 2024 5:57:19 PM com.tech.user.UserController createUser
+INFO: User created: User{id='3', firstName='preethi', lastName='kumari', email='preei@ert'}
