@@ -239,9 +239,7 @@ services:
     container_name: promtail
     volumes:
       - "/var/log:/var/log"
-      - "blog_logs:/blog_logs"
-      - "cred_logs:/cred_logs"
-      - "spring_logs:/spring_logs"
+      - "external_logs:/external_logs"
       - "./positions.yaml:/tmp/positions.yaml"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./promtail-config.yml:/etc/promtail-config.yml"
